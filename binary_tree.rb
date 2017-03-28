@@ -149,7 +149,7 @@ module BinaryTree
   end
 end
 
-
+# Several units tests (RSpec library required)
 RSpec.describe BinaryTree::Generator do
   let(:a) { BinaryTree::Generator.new(5,8,2,3,6,8,6,9,10,11,4) }
 
