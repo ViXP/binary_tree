@@ -9,28 +9,31 @@ module BinaryTree
     def initialize *arr
       @tree = []
       @path = []
-      @tree << Node.new(arr[0]) if arr.length > 0
-      1.upto(arr.length - 1) do |i|
-        position_node arr[i]
+      arr.each_with_index do |el, i| 
+        if el.is_a? Numeric
+          @tree << Node.new(el)
+          (i+1).upto(arr.length - 1) do |j|
+            position_node arr[j] if arr[j].is_a? Numeric
+          end
+          break
+        end
       end
       @tree
     end
 
     def search val = nil
       @path = []
-      return nil unless val
+      return nil unless val and val.is_a? Numeric
       search_parent @tree[0], val
     end
 
     def search_path val = nil
-      return nil unless val
-      search val
-      @path.join
+      @path.join if (search val)
     end
 
     def search_element path = nil
-      return nil unless path
-      path = path.to_s.split(/(.)/).reject(&:empty?)
+      path = path.to_s.scan(/\d/)
+      return nil if path.empty?
       el = @tree[0]
       path.each do |r|
         if el and r == '1'
@@ -52,16 +55,12 @@ module BinaryTree
     end
 
     def >> val = nil
-      return @tree unless val
-
+      return nil unless val
+      # MUST BE WRITTEN
     end
 
     def tree
-      arr = []  
-      @tree.each do |el|
-        arr << el.show
-      end
-      arr
+      [*@tree.map(&:show)]
     end
 
     # Methods aliases
@@ -79,7 +78,7 @@ module BinaryTree
       search_parent(@tree[0], value, true)
     end
 
-    def search_parent parent, value, build = nil
+    def search_parent parent, value, build = nil      
       if parent and parent.value <= value
         return parent.show if !build and parent.value == value  # node found
         @path << 1
@@ -103,7 +102,7 @@ module BinaryTree
         end
       else
         @path = []
-        parent # returns parent(nil) if not found
+        parent
       end
     end
   end
@@ -181,8 +180,9 @@ RSpec.describe BinaryTree::Generator do
       expect((a << 15).length).to eq 12 
     end
 
-    it 'deletes the element from the tree' do
-      expect(a >> 11.length).to eq 10 
+    it 'returns the deleted element from the tree' do
+      expect((a >> 11).is_a?).to be Node 
+      expect(a.tree.length).to eq 10
     end
   end
 
@@ -204,11 +204,12 @@ RSpec.describe BinaryTree::Generator do
     end
 
     it 'doesn\`t append new empty element to the tree' do
-      expect(a << nil).to eq nil
+      expect(a << nil).to be nil
     end
 
-    it 'returns the full tree if nothing to delete' do
-      expect(a >> nil.length). to eq 11
+    it 'returns no element if value is empty' do
+      expect((a >> nil)).to be nil 
+      expect(a.tree.length).to eq 11
     end
   end
 
@@ -218,22 +219,41 @@ RSpec.describe BinaryTree::Generator do
     end
 
     it 'finds no path by incorrect value' do
-      expect(a.find_path(15)).to be_empty
+      expect(a.find_path(15)).to be nil
     end
 
-    it 'finds no element by empty value' do
+    it 'finds no element by incorrect value' do
       expect(a[15]).to be nil
     end
 
-    it 'returns the full tree if element can\'t be deleted' do
-      expect(a >> 2500.length).to eq 11
+    it 'returns no element if element is not found' do
+      expect((a >> 2500)).to be nil
+      expect(a.tree.length).to eq 11
     end
   end
 
   describe 'incorrect data type tests' do
-    it 'returns the empty tree without incorrect data' do
-      expect(BinaryTree::Generator.new('a', 2, 4, 'bb').tree).to be_nil
+    it 'finds no element by incorrect path type' do
+      expect(a.find_element('a')).to be nil
     end
+
+    it 'finds no path by incorrect value type' do
+      expect(a.find_path('a')).to be nil
+    end
+
+    it 'returns no element if incorrect type' do
+      expect((a >> 'a')).to be nil
+      expect(a.tree.length).to eq 11
+    end
+
+    it 'returns the tree without incorrect data types' do
+      expect(BinaryTree::Generator.new('a', 2, 4, 'b').tree.length).to eq 2      
+      expect(BinaryTree::Generator.new(5, 2, 4, 'b').tree.length).to eq 3
+    end
+  end
+
+  describe 'alias methods tests' do
+
   end
 end
 
