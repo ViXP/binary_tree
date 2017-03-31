@@ -51,6 +51,11 @@ module BinaryTree
       tree
     end
 
+    def >> val = nil
+      return @tree unless val
+
+    end
+
     def tree
       arr = []  
       @tree.each do |el|
@@ -65,6 +70,7 @@ module BinaryTree
     alias_method :find_path, :search_path
     alias_method :find_element, :search_element
     alias_method :push, :<< 
+    alias_method :delete, :>>
     alias_method :show, :tree
 
     private
@@ -174,6 +180,10 @@ RSpec.describe BinaryTree::Generator do
     it 'appends new element to the tree' do
       expect((a << 15).length).to eq 12 
     end
+
+    it 'deletes the element from the tree' do
+      expect(a >> 11.length).to eq 10 
+    end
   end
 
   describe 'empty data tests' do
@@ -193,8 +203,12 @@ RSpec.describe BinaryTree::Generator do
       expect(a[]).to be nil
     end
 
-    it 'doesn`t append new empty element to the tree' do
+    it 'doesn\`t append new empty element to the tree' do
       expect(a << nil).to eq nil
+    end
+
+    it 'returns the full tree if nothing to delete' do
+      expect(a >> nil.length). to eq 11
     end
   end
 
@@ -209,6 +223,10 @@ RSpec.describe BinaryTree::Generator do
 
     it 'finds no element by empty value' do
       expect(a[15]).to be nil
+    end
+
+    it 'returns the full tree if element can\'t be deleted' do
+      expect(a >> 2500.length).to eq 11
     end
   end
 
