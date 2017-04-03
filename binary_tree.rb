@@ -1,11 +1,8 @@
-require 'digest/md5'
-require 'rspec'
-
 module BinaryTree
   class Generator
     # Binary tree generator class
-    # input: the elements of tree
-    # output: the tree of elements
+    # input (INTEGERS): the elements of tree
+    # output (HASH): the hash with human readable nodes
     def initialize *arr
       @tree = []
       @path = []
@@ -18,7 +15,7 @@ module BinaryTree
           break
         end
       end
-      @tree
+      tree
     end
 
     def search val = nil
@@ -67,12 +64,12 @@ module BinaryTree
             parent.right = nil
           end
           @tree.delete(el)
-          return el
+          el
         else
           # MUST BE WRITTEN
         end
       else
-
+        nil
       end
     end
 
@@ -126,10 +123,10 @@ module BinaryTree
 
   class Node
     # Binary tree node class
-    # input: the value of tree
-    # output: the value of element
+    # input (INTEGER): the value of element
+    # output (INTEGER): the value of element
     attr_accessor :left, :right
-    attr_reader :value, :status, :id
+    attr_reader :value, :status
 
     @@quantity = 0
 
@@ -142,8 +139,6 @@ module BinaryTree
       left = nil
       right = nil
       @status = :leaf
-      @id = Digest::MD5.hexdigest(Node.quantify.to_s)
-      id
     end
 
     def left= left

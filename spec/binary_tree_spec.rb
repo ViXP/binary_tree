@@ -1,6 +1,6 @@
+require 'rspec'
 require '../binary_tree'
 
-# Several units tests (RSpec library required)
 RSpec.describe BinaryTree::Generator do
   let(:a) { BinaryTree::Generator.new(5,8,2,3,6,8,6,9,10,11,4) }
 
@@ -11,7 +11,7 @@ RSpec.describe BinaryTree::Generator do
     end
 
     it 'finds element by path' do
-      expect(a.find_element('01')[:val]).to eq 3
+      expect(a.find_element('01').class).to be BinaryTree::Node
     end
 
     it 'finds path by value' do
@@ -19,15 +19,20 @@ RSpec.describe BinaryTree::Generator do
     end
 
     it 'finds element by value' do
-      expect(a[9]).to be Node
+      expect(a[9].class).to be BinaryTree::Node
     end
 
     it 'appends new element to the tree' do
       expect((a << 15).length).to eq 12 
     end
 
-    it 'returns the deleted element from the tree' do
-      expect((a >> 11).is_a?).to be Node 
+    it 'returns the deleted leaf element from the tree' do
+      expect((a >> 11).class).to be BinaryTree::Node 
+      expect(a.tree.length).to eq 10
+    end
+
+    it 'returns the deleted non-leaf element from the tree' do
+      expect((a >> 6).class).to be BinaryTree::Node 
       expect(a.tree.length).to eq 10
     end
   end
