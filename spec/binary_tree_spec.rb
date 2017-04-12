@@ -1,5 +1,5 @@
 require 'rspec'
-require '../binary_tree'
+require './binary_tree'
 
 RSpec.describe BinaryTree::Generator do
   let(:a) { BinaryTree::Generator.new(5,8,2,3,6,8,6,9,10,11,4) }
@@ -7,7 +7,7 @@ RSpec.describe BinaryTree::Generator do
   describe 'correct data tests' do
     it 'is a correct tree' do
       expect(a.class).to eq BinaryTree::Generator
-      expect(a.tree.size).to eq 11  
+      expect(a.inspect.size).to eq 11  
     end
 
     it 'finds element by path' do
@@ -28,18 +28,18 @@ RSpec.describe BinaryTree::Generator do
 
     it 'returns the deleted leaf element from the tree' do
       expect((a >> 11).class).to be BinaryTree::Node 
-      expect(a.tree.length).to eq 10
+      expect(a.inspect.length).to eq 10
     end
 
     it 'returns the deleted non-leaf element from the tree' do
       expect((a >> 6).class).to be BinaryTree::Node 
-      expect(a.tree.length).to eq 10
+      expect(a.inspect.length).to eq 10
     end
   end
 
   describe 'empty data tests' do
     it 'returns the empty tree' do
-      expect(BinaryTree::Generator.new().tree).to eq []
+      expect(BinaryTree::Generator.new().inspect).to eq []
     end
 
     it 'find no element by empty path' do
@@ -60,7 +60,7 @@ RSpec.describe BinaryTree::Generator do
 
     it 'returns no element if value is empty' do
       expect((a >> nil)).to be nil 
-      expect(a.tree.length).to eq 11
+      expect(a.inspect.length).to eq 11
     end
   end
 
@@ -79,7 +79,7 @@ RSpec.describe BinaryTree::Generator do
 
     it 'returns no element if element is not found' do
       expect((a >> 2500)).to be nil
-      expect(a.tree.length).to eq 11
+      expect(a.inspect.length).to eq 11
     end
   end
 
@@ -94,12 +94,12 @@ RSpec.describe BinaryTree::Generator do
 
     it 'returns no element if incorrect type' do
       expect((a >> 'a')).to be nil
-      expect(a.tree.length).to eq 11
+      expect(a.inspect.length).to eq 11
     end
 
     it 'returns the tree without incorrect data types' do
-      expect(BinaryTree::Generator.new('a', 2, 4, 'b').tree.length).to eq 2      
-      expect(BinaryTree::Generator.new(5, 2, 4, 'b').tree.length).to eq 3
+      expect(BinaryTree::Generator.new('a', 2, 4, 'b').inspect.length).to eq 2      
+      expect(BinaryTree::Generator.new(5, 2, 4, 'b').inspect.length).to eq 3
     end
   end
 

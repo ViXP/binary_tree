@@ -15,7 +15,7 @@ module BinaryTree
           break
         end
       end
-      tree
+      to_s
     end
 
     def search val = nil
@@ -48,7 +48,7 @@ module BinaryTree
       return nil unless val
       @path = []
       search_parent(@tree[0], val, true)
-      tree
+      inspect
     end
 
     def >> val = nil
@@ -73,7 +73,7 @@ module BinaryTree
       end
     end
 
-    def tree
+    def inspect
       [*@tree.map(&:show)]
     end
 
@@ -84,7 +84,8 @@ module BinaryTree
     alias_method :find_element, :search_element
     alias_method :push, :<< 
     alias_method :delete, :>>
-    alias_method :show, :tree
+    alias_method :show, :inspect
+    alias_method :to_s, :inspect
 
     private
 
@@ -165,3 +166,6 @@ module BinaryTree
     end
   end
 end
+
+tree = BinaryTree::Generator.new(5,3,2,4,8,7,13,11,9,10,12,15)
+p tree
